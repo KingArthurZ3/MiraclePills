@@ -7,8 +7,20 @@
 //
 
 import UIKit
-
+//hides keyboard when tapped around
+extension UIViewController {
+    func hideKeyboardWhenTappedAround() {
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(UIViewController.dismissKeyboard))
+        tap.cancelsTouchesInView = false
+        view.addGestureRecognizer(tap)
+    }
+    
+    func dismissKeyboard() {
+        view.endEditing(true)
+    }
+}
 class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate {
+  
     
     let states = ["Alaska",
                   "Alabama",
@@ -71,20 +83,35 @@ class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDele
         statePicker.dataSource = self
         statePicker.delegate = self
         // Do any additional setup after loading the view, typically from a nib.
+        self.hideKeyboardWhenTappedAround()
     }
 
     @IBOutlet weak var statePickerBtn: UIButton!
     @IBOutlet weak var statePicker: UIPickerView!
+    
+    @IBOutlet weak var CountryLabel: UILabel!
+    @IBOutlet weak var CountryText: UITextField!
+    @IBOutlet weak var ZipCodeLabel: UILabel!
+    @IBOutlet weak var ZipCodeText: UITextField!
+    
+    @IBOutlet weak var buyNowButton: UIButton!
+    
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
 
 
-    @IBAction func stateButtonPressed(_ sender: Any) {
-        
+    @IBAction func StateBtnPressed(_ sender: Any) {
         statePicker.isHidden = false
+        CountryLabel.isHidden = true
+        CountryText.isHidden = true
+        ZipCodeLabel.isHidden = true
+        ZipCodeText.isHidden = true
+        buyNowButton.isHidden = true
     }
+
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
     }
@@ -98,6 +125,11 @@ class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDele
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         statePickerBtn.setTitle(states[row], for: UIControlState()) //UIControlState.normal
         statePicker.isHidden = true
+        CountryLabel.isHidden = false
+        CountryText.isHidden = false
+        ZipCodeLabel.isHidden = false
+        ZipCodeText.isHidden = false
+        buyNowButton.isHidden = false
     }
 }
 
