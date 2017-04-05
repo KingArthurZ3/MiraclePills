@@ -19,6 +19,8 @@ extension UIViewController {
         view.endEditing(true)
     }
 }
+
+
 class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate {
   
     
@@ -78,16 +80,36 @@ class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDele
                   "West Virginia",
                   "Wyoming"]
 
+    private var lastContentOffset: CGFloat = 0
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         statePicker.dataSource = self
         statePicker.delegate = self
         // Do any additional setup after loading the view, typically from a nib.
         self.hideKeyboardWhenTappedAround()
+        
+//        var newX: CGFloat = 0.0
+//        newX = view.frame.midX + view.frame.size.width * CGFloat(x)
+//         scrollView.addSubView(imageView)
+        func scrollViewDidScroll(scrollView: UIScrollView!) {
+            if (self.lastContentOffset > scrollView.contentOffset.y) {
+                // move up
+            }
+            else if (self.lastContentOffset < scrollView.contentOffset.y) {
+                // move down
+            }
+            
+            // update the new position acquired
+            self.lastContentOffset = scrollView.contentOffset.y
+        }
+        
     }
-
     @IBOutlet weak var statePickerBtn: UIButton!
     @IBOutlet weak var statePicker: UIPickerView!
+
+    @IBOutlet weak var scrollView: UIScrollView!
+
     
     @IBOutlet weak var CountryLabel: UILabel!
     @IBOutlet weak var CountryText: UITextField!
@@ -102,15 +124,15 @@ class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDele
         // Dispose of any resources that can be recreated.
     }
 
-
-    @IBAction func StateBtnPressed(_ sender: Any) {
+    @IBAction func stateBtnPressed(_ sender: Any) {
         statePicker.isHidden = false
-        CountryLabel.isHidden = true
-        CountryText.isHidden = true
-        ZipCodeLabel.isHidden = true
-        ZipCodeText.isHidden = true
-        buyNowButton.isHidden = true
+//                CountryLabel.isHidden = true
+//                CountryText.isHidden = true
+//                ZipCodeLabel.isHidden = true
+//                ZipCodeText.isHidden = true
+//                buyNowButton.isHidden = true
     }
+
 
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
@@ -123,13 +145,15 @@ class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDele
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        statePickerBtn.setTitle(states[row], for: UIControlState()) //UIControlState.normal
+        statePickerBtn.setTitle(states[row], for: UIControlState.normal) //UIControlState.normal
         statePicker.isHidden = true
-        CountryLabel.isHidden = false
-        CountryText.isHidden = false
-        ZipCodeLabel.isHidden = false
-        ZipCodeText.isHidden = false
-        buyNowButton.isHidden = false
+//        CountryLabel.isHidden = false
+//        CountryText.isHidden = false
+//        ZipCodeLabel.isHidden = false
+//        ZipCodeText.isHidden = false
+//        buyNowButton.isHidden = false
     }
+    
+    
 }
 
